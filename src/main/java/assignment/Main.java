@@ -1,6 +1,8 @@
 package assignment;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +11,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class Main extends AbstractHandler {
+    private String requests = "";
+    private int requestsCount = 0;
+
     @Override
     public void handle(String target,
                        Request baseRequest,
@@ -21,7 +26,16 @@ public class Main extends AbstractHandler {
         response.setStatus(HttpServletResponse.SC_OK);
 
         // Write back response
-        response.getWriter().println("<h1>Hello World</h1>");
+        PrintWriter res = response.getWriter();
+        res.println(requests);
+        BufferedReader body = request.getReader();
+        String buf = "<h1>Request #" + requestsCount + "</h1><pre>";
+        for (String line = body.readLine(); line != null; line = body.readLine()) {
+            buf = buf + line + "\n";
+        }
+        buf = buf + "</pre>";
+        requests = buf + requests;
+        ++requestsCount;
 
         // Inform jetty that this request has now been handled
         baseRequest.setHandled(true);
