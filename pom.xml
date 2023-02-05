@@ -25,6 +25,11 @@
       <artifactId>jetty-server</artifactId>
       <version>9.4.50.v20221201</version>
     </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20220924</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
