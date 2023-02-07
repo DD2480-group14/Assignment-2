@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+            .center {
+                text-align: center;
+            }
+            .pagination {
+                display: inline-block;
+            }
+            .pagination a {
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+            }
+
+            .pagination a.active {
+                background-color: paleturquoise;
+                color: plum;
+                border: 1px solid paleturquoise;
+            }
+            .pagination a:hover:not(.active) {
+                background-color: lightgreen;
+            }
+        </style>
+        <h1>Builds and Requests</h1>
+    </head>
+    <body>
+        <label for="freeform">Build 1</label>
+        <br>
+        <textarea id="freeform" name="freeform" rows="4" cols="50">
+            Information about the build.
+        </textarea>
+        <h2>More Pages</h2>
+        <div class ="pagination">
+            <a href = "#">&laquo;</a>
+            <a href="#">1</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </body>
+</html>
