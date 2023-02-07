@@ -42,28 +42,11 @@ public class Main extends AbstractHandler {
     }
 
     public static void main(String[] args) throws Exception {
-        // Builder builder = new Builder("Issue-8", "5");
-        // System.out.println("Cloning repo...");
-        // if (builder.cloneRepo()) {
-        // System.out.println("Repo cloned successfully");
-        // } else {
-        // System.out.println("Repo cloning failed");
-        // }
-        // System.out.println("Building repo...");
-        // if (builder.build()) {
-        // System.out.println("Repo built successfully");
-        // } else {
-        // System.out.println("Repo building failed");
-        // }
-
         int port = 8080;
         Server server = new Server(port);
         server.setHandler(new Main());
 
         server.start();
         server.join();
-
-
-
     }
 }
