@@ -1,0 +1,25 @@
+package assignment;
+
+import org.junit.Test;
+import org.junit.Assert;
+
+public class BuilderTest {
+    // clone existing commit
+    @Test
+    public void testClone() {
+        try {
+            Builder.build("559a247f76d0fbc436c51193a439130bb232851c");
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
+    // clone non existing commit
+    @Test
+    public void testClone2() {
+        try {
+            Builder.build("1234567899");
+            Assert.fail();
+        } catch (Exception e) {}
+    }
+}
