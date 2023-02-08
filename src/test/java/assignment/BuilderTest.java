@@ -1,21 +1,25 @@
 package assignment;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
 public class BuilderTest {
-    // clone existing main branch
+    // clone existing commit
     @Test
     public void testClone() {
-        Builder builder = new Builder("main", "123456789");
-        Assert.assertTrue(builder.cloneRepo());
+        try {
+            Builder.build("559a247f76d0fbc436c51193a439130bb232851c");
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
 
-    // clone non existing branch
+    // clone non existing commit
     @Test
     public void testClone2() {
-        Builder builder = new Builder("non-existing-branch", "1234567899");
-        Assert.assertFalse(builder.cloneRepo());
-
+        try {
+            Builder.build("1234567899");
+            Assert.fail();
+        } catch (Exception e) {}
     }
 }

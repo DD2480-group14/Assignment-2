@@ -30,13 +30,13 @@ public class Webhook extends AbstractHandler {
             baseRequest.setHandled(true);
             return;
         }
-        Builder b = new Builder("main", commitHash);
-        if (!b.cloneRepo()) {
+        try {
+            Builder.build(commitHash);
+        } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             baseRequest.setHandled(true);
             return;
         }
-        b.buildRepo();
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
     }
