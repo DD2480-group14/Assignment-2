@@ -76,7 +76,7 @@ public class Webview extends AbstractHandler {
         for (int i = 0; i < builds.length; i++) {
             res.println("\n<br>" + "\n<label for=\"freeform\">Build " + (i + 1) + "</label>"
                             + "\n<br>"
-                            + "\n<textarea id=\"freeform\" name=\"freeform\" rows=\"4\" cols=\"50\">"
+                            + "\n<textarea id=\"freeform\" name=\"freeform\" rows=\"5\" cols=\"110\">"
                             + "\nid: " + builds[i][0] + "\norigin: " + builds[i][1] + "\nstatus: "
                             + builds[i][2] + "\nlog: " + builds[i][3] + "\n</textarea>" + "\n<br>");
         }
