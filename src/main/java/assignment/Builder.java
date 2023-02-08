@@ -28,8 +28,13 @@ public class Builder {
 
     public boolean cloneRepo() {
         try {
-            CloneCommand clone = Git.cloneRepository().setURI(repoURL)
-                                    .setDirectory(new File(repoPath + "/" + commitHash));
+            // check if repo exists
+            File repo = new File(repoPath);
+            if (repo.exists() && repo.isDirectory()) {
+                deleteDirectory(repo);
+            }
+            CloneCommand clone =
+                Git.cloneRepository().setURI(repoURL).setDirectory(new File(repoPath));
             if (branchName != "main") {
                 clone.setBranch(branchName);
             }
@@ -50,14 +55,51 @@ public class Builder {
 
     }
 
+    public void deleteRepo() {
+        File repo = new File(repoPath);
+        if (repo.exists() && repo.isDirectory()) {
+            deleteDirectory(repo);
+        }
+    }
+
+    public static boolean deleteDirectory(File directory) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        return directory.delete();
+    }
+
+    public boolean deleteLog(String commit) {
+        File logDir = new File("log");
+        if (!logDir.exists()) {
+            return false;
+        }
+        File logFile = new File(logDir, commit + ".txt");
+        if (!logFile.exists()) {
+            return false;
+        }
+        return logFile.delete();
+    }
+
     public boolean build() {
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile(new File(repoPath + "/" + commitHash + "/pom.xml"));
+        request.setPomFile(new File(repoPath + "/pom.xml"));
         request.setGoals(java.util.Arrays.asList("clean", "verify"));
         Invoker invoker = new DefaultInvoker();
         invoker.setMavenHome(new File(System.getenv("MAVEN-HOME")));
-
-        File logFile = new File(repoPath + "/" + commitHash + "/build.log");
+        // create a directory for the log file
+        File logDir = new File("log");
+        if (!logDir.exists()) {
+            logDir.mkdir();
+        }
+        File logFile = new File(logDir, commitHash + ".txt");
         try {
             FileWriter fileWriter = new FileWriter(logFile);
             request.setOutputHandler(outputLine -> {
@@ -65,12 +107,15 @@ public class Builder {
             });
             try {
                 InvocationResult result = invoker.execute(request);
-                fileWriter.close();
                 if (result.getExitCode() != 0) {
+                    fileWriter.write("Build failed.");
+                    fileWriter.close();
                     throw new IllegalStateException("Build failed.");
                 }
+                fileWriter.close();
                 return true;
             } catch (Exception e) {
+                fileWriter.write(e.getMessage());
                 fileWriter.close();
                 e.printStackTrace();
                 return false;

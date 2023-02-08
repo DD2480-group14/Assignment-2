@@ -1,0 +1,71 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< assignment:assignment >------------------------
+[INFO] Building assignment 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ assignment ---
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ assignment ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Jonas\Skola\DD2480\Assignment-2\build\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ assignment ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to C:\Users\Jonas\Skola\DD2480\Assignment-2\build\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ assignment ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Jonas\Skola\DD2480\Assignment-2\build\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ assignment ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ assignment ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ assignment ---
+[INFO] Building jar: C:\Users\Jonas\Skola\DD2480\Assignment-2\build\target\assignment-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-shade-plugin:3.4.1:shade (default) @ assignment ---
+[INFO] Including org.eclipse.jetty:jetty-server:jar:9.4.50.v20221201 in the shaded jar.
+[INFO] Including javax.servlet:javax.servlet-api:jar:3.1.0 in the shaded jar.
+[INFO] Including org.eclipse.jetty:jetty-http:jar:9.4.50.v20221201 in the shaded jar.
+[INFO] Including org.eclipse.jetty:jetty-util:jar:9.4.50.v20221201 in the shaded jar.
+[INFO] Including org.eclipse.jetty:jetty-io:jar:9.4.50.v20221201 in the shaded jar.
+[INFO] Including org.eclipse.jgit:org.eclipse.jgit:jar:6.4.0.202211300538-r in the shaded jar.
+[INFO] Including com.googlecode.javaewah:JavaEWAH:jar:1.1.13 in the shaded jar.
+[INFO] Including org.apache.maven.shared:maven-invoker:jar:3.2.0 in the shaded jar.
+[INFO] Including org.apache.maven.shared:maven-shared-utils:jar:3.3.4 in the shaded jar.
+[INFO] Including commons-io:commons-io:jar:2.6 in the shaded jar.
+[INFO] Including javax.inject:javax.inject:jar:1 in the shaded jar.
+[INFO] Including org.slf4j:slf4j-api:jar:2.0.3 in the shaded jar.
+[INFO] Including org.slf4j:slf4j-simple:jar:2.0.3 in the shaded jar.
+[INFO] Including org.json:json:jar:20220924 in the shaded jar.
+[WARNING] maven-invoker-3.2.0.jar, maven-shared-utils-3.3.4.jar define 3 overlapping resources: 
+[WARNING]   - META-INF/DEPENDENCIES
+[WARNING]   - META-INF/LICENSE
+[WARNING]   - META-INF/NOTICE
+[WARNING] commons-io-2.6.jar, javax.servlet-api-3.1.0.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/LICENSE.txt
+[WARNING] JavaEWAH-1.1.13.jar, assignment-1.0-SNAPSHOT.jar, commons-io-2.6.jar, maven-invoker-3.2.0.jar, maven-shared-utils-3.3.4.jar, org.eclipse.jgit-6.4.0.202211300538-r.jar, slf4j-api-2.0.3.jar, slf4j-simple-2.0.3.jar define 1 overlapping resource: 
+[WARNING]   - META-INF/MANIFEST.MF
+[WARNING] slf4j-api-2.0.3.jar, slf4j-simple-2.0.3.jar define 1 overlapping classes: 
+[WARNING]   - META-INF.versions.9.module-info
+[WARNING] maven-shade-plugin has detected that some class files are
+[WARNING] present in two or more JARs. When this happens, only one
+[WARNING] single version of the class is copied to the uber jar.
+[WARNING] Usually this is not harmful and you can skip these warnings,
+[WARNING] otherwise try to manually exclude artifacts based on
+[WARNING] mvn dependency:tree -Ddetail=true and the above output.
+[WARNING] See https://maven.apache.org/plugins/maven-shade-plugin/
+[INFO] Replacing original artifact with shaded artifact.
+[INFO] Replacing C:\Users\Jonas\Skola\DD2480\Assignment-2\build\target\assignment-1.0-SNAPSHOT.jar with C:\Users\Jonas\Skola\DD2480\Assignment-2\build\target\assignment-1.0-SNAPSHOT-shaded.jar
+[INFO] 
+[INFO] --- spotless-maven-plugin:2.30.0:check (default) @ assignment ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.970 s
+[INFO] Finished at: 2023-02-08T14:20:50+01:00
+[INFO] ------------------------------------------------------------------------
