@@ -46,7 +46,7 @@ public class Builder {
             // check if repo exists
             File repo = new File(repoPath);
             if (repo.exists() && repo.isDirectory()) {
-                deleteDirectory(repo);
+                deleteRepo();
             }
             CloneCommand clone =
                 Git.cloneRepository().setURI(repoURL).setDirectory(new File(repoPath));
@@ -84,7 +84,9 @@ public class Builder {
                 if (file.isDirectory()) {
                     deleteDirectory(file);
                 } else {
-                    file.delete();
+                    if (file.delete()) {} else {
+                        System.out.println("Failed to delete file: " + file.getName());
+                    }
                 }
             }
         }
