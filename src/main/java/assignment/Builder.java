@@ -76,7 +76,7 @@ public class Builder {
         request.setPomFile(new File(repoPath + "/" + commitHash + "/pom.xml"));
         request.setGoals(java.util.Arrays.asList("clean", "verify"));
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File(System.getenv("MAVEN-HOME")));
+        invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
         File logFile = new File(repoPath + "/" + commitHash + "/build.log");
         try {
             FileWriter fileWriter = new FileWriter(logFile);
