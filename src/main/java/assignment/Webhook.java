@@ -13,6 +13,26 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.io.IOUtils;
 
 public class Webhook extends AbstractHandler {
+    private class WorkThread extends Thread {
+        String commitHash;
+
+        WorkThread(String commitHash) {
+            this.commitHash = commitHash;
+        }
+
+        public void run() {
+            Builder.Result status;
+            try {
+                status = Builder.build(commitHash);
+            } catch (Exception e) {
+                return;
+            }
+            try {
+                Notifier.sendStatus(System.getenv("CI_TOKEN"), commitHash, status);
+            } catch (Exception e) {}
+        }
+    }
+
     @Override
     public void handle(String target,
                        Request baseRequest,
@@ -34,17 +54,10 @@ public class Webhook extends AbstractHandler {
             baseRequest.setHandled(true);
             return;
         }
+        WorkThread thread = new WorkThread(commitHash);
+        thread.start();
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
-        Builder.Result status;
-        try {
-            status = Builder.build(commitHash);
-        } catch (Exception e) {
-            return;
-        }
-        try {
-            Notifier.sendStatus(System.getenv("CI_TOKEN"), commitHash, status);
-        } catch (Exception e) {}
     }
 
     static String hash(String key, byte[] data) {

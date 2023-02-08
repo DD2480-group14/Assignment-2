@@ -32,8 +32,9 @@ public class Notifier {
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Accept", "application/vnd.github+json");
         connection.setRequestProperty("X-GitHub-Api-Version", "2022-11-28");
-        connection.setRequestProperty("Authorization", "Bearer" + token);
+        connection.setRequestProperty("Authorization", "Bearer " + token);
         connection.setDoOutput(true);
+        connection.connect();
         OutputStream out = connection.getOutputStream();
         out.write(makeJson(status).getBytes());
         out.flush();
