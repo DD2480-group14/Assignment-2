@@ -30,7 +30,6 @@ public class Builder {
         request.setPomFile(new File(repoPath + "/pom.xml"));
         request.setGoals(java.util.Arrays.asList("clean", "verify"));
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
         AtomicReference<String> log = new AtomicReference<String>("");
         request.setOutputHandler(outputLine -> {
             log.set(log.get() + outputLine);
