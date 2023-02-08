@@ -20,7 +20,7 @@ public class Webhook extends AbstractHandler {
                        HttpServletResponse response) throws IOException, ServletException {
         byte[] content = IOUtils.toByteArray(request.getInputStream());
         String expectedHash = request.getHeader("X-Hub-Signature-256");
-        if (!("sha256=" + hash(content)).equals(expectedHash)) {
+        if (!("sha256=" + hash(System.getenv("CI_SECRET"), content)).equals(expectedHash)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             baseRequest.setHandled(true);
             return;
@@ -34,20 +34,21 @@ public class Webhook extends AbstractHandler {
             baseRequest.setHandled(true);
             return;
         }
-        try {
-            Builder.build(commitHash);
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            baseRequest.setHandled(true);
-            return;
-        }
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
+        Builder.Result status;
+        try {
+            status = Builder.build(commitHash);
+        } catch (Exception e) {
+            return;
+        }
+        try {
+            Notifier.sendStatus(System.getenv("CI_TOKEN"), commitHash, status);
+        } catch (Exception e) {}
     }
 
-    static String hash(byte[] data) {
+    static String hash(String key, byte[] data) {
         try {
-            final String key = "secret";
             final String alg = "HmacSHA256";
             SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), alg);
             Mac mac = Mac.getInstance(alg);

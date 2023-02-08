@@ -1,62 +1,42 @@
 package assignment;
 
-import org.json.JSONObject;
-import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Notifier {
-    public static JSONObject getJson(String testResult) {
-        String state;
-        String targetUrl = "";
-        String description;
-        String context = "DD2480 Group14 CI";
-
-        if (testResult.equals("succeeded")) {
+    static String makeJson(Builder.Result status) {
+        String state = "failure";
+        String description = "";
+        if (status == Builder.Result.Success) {
             state = "success";
-            description = "Succeeded, passed the tests";
-        } else if (testResult.equals("buildFailed")) {
-            state = "failure";
-            description = "Failed, compilation failed";
-        } else if (testResult.equals("testsFailed")) {
-            state = "failure";
-            description = "Failed, some tests failed";
-        } else {
-            state = "pending";
-            description = "Testing...";
+            description = "Success!";
+        } else if (status == Builder.Result.FailCompile) {
+            description = "Failed compilation.";
+        } else if (status == Builder.Result.FailTest) {
+            description = "Failed testing.";
+        } else if (status == Builder.Result.FailVerify) {
+            description = "Failed additional checks.";
         }
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("state", state);
-        jsonObject.put("target_url", targetUrl);
-        jsonObject.put("description", description);
-        jsonObject.put("context", context);
-        return jsonObject;
+        return "{\"state\":\"" + state
+                        + "\",\"target_url\":\"https://ci.veresov.pro/\",\"description\":\""
+                        + description + "\",\"context\":\"Awesome CI\"}";
     }
 
-    public static boolean sentStatus(String commitHash, String testResult) {
-        String urlString = "https://github.com/DD2480-group14/Assignment-2";
-        String tokenString = "d9ffe565c130a12b63833547aede6d893796eba4";
-
-        try {
-            URL url = new URL(urlString + commitHash + tokenString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.setUseCaches(false);
-            connection.setRequestProperty("Accept", "application/vnd.github+json");
-            connection.setRequestProperty("Authorization", "application/vnd.github+json");
-            connection.connect();
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(getJson(testResult).toString());
-            out.flush();
-            out.close();
-            connection.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    public static void sendStatus(String token,
+                                  String commitHash,
+                                  Builder.Result status) throws Exception {
+        String baseUrl = "https://api.github.com/repos/DD2480-group14/Assignment-2/statuses/";
+        URL url = new URL(baseUrl + commitHash);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Accept", "application/vnd.github+json");
+        connection.setRequestProperty("X-GitHub-Api-Version", "2022-11-28");
+        connection.setRequestProperty("Authorization", "Bearer" + token);
+        connection.setDoOutput(true);
+        OutputStream out = connection.getOutputStream();
+        out.write(makeJson(status).getBytes());
+        out.flush();
+        out.close();
     }
-
 }
