@@ -20,9 +20,6 @@ public class Webhook extends AbstractHandler {
                        HttpServletResponse response) throws IOException, ServletException {
         byte[] content = IOUtils.toByteArray(request.getInputStream());
         String expectedHash = request.getHeader("X-Hub-Signature-256");
-        System.out.println(new String(content));
-        System.out.println(expectedHash);
-        System.out.println(hash(content));
         if (!("sha256=" + hash(content)).equals(expectedHash)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             baseRequest.setHandled(true);
