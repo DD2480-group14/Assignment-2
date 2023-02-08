@@ -39,6 +39,11 @@ mvn clean verify
 This command also runs all the tests and checks configured for the code.
 
 
+## Running
+
+In order to run the server, you will need to specify two environment variables: CI_SECRET and CI_TOKEN. CI_SECRET is secret value from GitHub webhook settings, CI_TOKEN is your access token with right to set up statuses for commits.
+
+
 ## Code Style
 
 The code style is enforced by the build system. The file describing the formatting rules is `format.xml`, it is in the Eclipse file-format. The code style is based on [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) with indentation by 4 spaces instead of 2. You can use Maven to automatically apply the code style by running:
