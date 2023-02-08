@@ -9,7 +9,7 @@ public class BuilderTest {
     public void testBuilder() {
         Builder builder = new Builder("main", "123456789");
         Assert.assertTrue(builder.cloneRepo());
-        Assert.assertTrue(builder.build());
+        Assert.assertTrue(builder.buildRepo());
 
     }
 
@@ -18,6 +18,6 @@ public class BuilderTest {
     public void testBuilder2() {
         Builder builder = new Builder("non-existing-branch", "1234567899");
         Assert.assertFalse(builder.cloneRepo());
-        Assert.assertFalse(builder.build());
+        Assert.assertFalse(builder.buildRepo());
     }
 }

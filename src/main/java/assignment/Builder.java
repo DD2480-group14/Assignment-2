@@ -103,7 +103,6 @@ public class Builder {
         return logFile.delete();
     }
 
-    public boolean build() {
     /**
      * Builds the project specified in repoURL, branchName and commitHash using maven. The function
      * writes the output to a log file in the cloned repository folder
