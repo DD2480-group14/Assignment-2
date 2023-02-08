@@ -63,16 +63,22 @@ You can choose any open task on the project's GitHub Issues [page](https://githu
 ### Tianyu Deng
 
 
-## Way of Working
+## TEAM
 
-We estimate our way of working to be at "In Place" level.
+We estimate our way of working to be at "Collaborating" level.
 
-### Principles Established
+### Seeded
 
-We decided on a system where we could work independently on issues.
+We have defined the composition and division of labor of the team. We selected remote cooperation as the way of working. 
 
-### Foundations Established
+### Formed 
 
-We used slack for general communication purposes and we used github issues for keeping track of tasks. We agreed on that the main branch should be in a working state so everyone can easily start working on new tasks. To ensure this we utilized github actions to check the code and apply tests on it before a pull request can be merged into main. We prohibited direct pushes to main and required at least one approval on pull requests before it could be merged.
+We discussed the work flow and assigned the responsibilities of each person via Slack meeting, which made everyone understand the whole team and their own roles. By using github issues, we can all understand what need to accomplish and keep track of tasks.
 
+### Collaborating 
 
+We have completed our homework together, which proves that we are cohesive. We communicate with each other through slip and GitHub comment, honestly express our work progress and difficulties, and solve problems through communication to jointly accomplish team mission. This certainly shows that we understand and trust each other.
+
+### Performing 
+
+We think we didn't reach this level because we didn't meet some requirements: We didn't keep recognizing wasted work and the potential for wasted work and use some tools such as Java CI to help us to identify some coding problems.
