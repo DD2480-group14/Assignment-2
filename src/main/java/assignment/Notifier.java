@@ -6,16 +6,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Notifier {
-    public static JSONObject setJson(JSONObject commitStatus) {
-        String testResult = "";
+    public static JSONObject getJson(String testResult) {
         String state;
         String targetUrl = "";
         String description;
-        String context = "";
+        String context = "DD2480 Group14 CI";
 
-        if (testResult.equals("buildFailed")) {
+        if (testResult.equals("succeeded")) {
             state = "success";
             description = "Succeeded, passed the tests";
+        } else if (testResult.equals("buildFailed")) {
+            state = "failure";
+            description = "Failed, compilation failed";
         } else if (testResult.equals("testsFailed")) {
             state = "failure";
             description = "Failed, some tests failed";
@@ -32,24 +34,21 @@ public class Notifier {
         return jsonObject;
     }
 
-    public static boolean setStatus(JSONObject commitStatus) {
-        String urlString = "";
-        String shaString = "";
-        String userString = "";
-        String tokenString = "";
-        HttpURLConnection connection;
-        DataOutputStream dataOutput;
+    public static boolean sentStatus(String commitHash, String testResult) {
+        String urlString = "https://github.com/DD2480-group14/Assignment-2";
+        String tokenString = "d9ffe565c130a12b63833547aede6d893796eba4";
 
         try {
-            URL url = new URL(urlString + shaString + userString + tokenString);
-            connection = (HttpURLConnection) url.openConnection();
+            URL url = new URL(urlString + commitHash + tokenString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             connection.setUseCaches(false);
-            connection.setRequestProperty("Content-type", "application/vnd.github+json");
+            connection.setRequestProperty("Accept", "application/vnd.github+json");
+            connection.setRequestProperty("Authorization", "application/vnd.github+json");
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(setJson(commitStatus).toString());
+            out.writeBytes(getJson(testResult).toString());
             out.flush();
             out.close();
             connection.disconnect();
