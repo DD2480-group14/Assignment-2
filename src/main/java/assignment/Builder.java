@@ -83,7 +83,7 @@ public class Builder {
         Invoker invoker = new DefaultInvoker();
         log = new AtomicReference<String>("");
         request.setOutputHandler(outputLine -> {
-            log.set(log.get() + outputLine);
+            log.set(log.get() + outputLine + "\n");
         });
         InvocationResult result;
         try {
