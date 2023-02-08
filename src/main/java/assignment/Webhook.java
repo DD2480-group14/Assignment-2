@@ -1,7 +1,6 @@
 package assignment;
 
 import java.io.IOException;
-import java.io.BufferedReader;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +10,7 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import org.apache.commons.io.IOUtils;
 
 public class Webhook extends AbstractHandler {
     @Override
@@ -18,20 +18,19 @@ public class Webhook extends AbstractHandler {
                        Request baseRequest,
                        HttpServletRequest request,
                        HttpServletResponse response) throws IOException, ServletException {
-        BufferedReader body = request.getReader();
-        String content = "";
-        for (String line = body.readLine(); line != null; line = body.readLine()) {
-            content = content + line + "\n";
-        }
+        byte[] content = IOUtils.toByteArray(request.getInputStream());
         String expectedHash = request.getHeader("X-Hub-Signature-256");
-        if (!hash(content).equals(expectedHash)) {
+        System.out.println(new String(content));
+        System.out.println(expectedHash);
+        System.out.println(hash(content));
+        if (!("sha256=" + hash(content)).equals(expectedHash)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             baseRequest.setHandled(true);
             return;
         }
         String commitHash;
         try {
-            JSONObject json = new JSONObject(content);
+            JSONObject json = new JSONObject(new String(content));
             commitHash = json.getJSONObject("head_commit").getString("id");
         } catch (JSONException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -49,14 +48,14 @@ public class Webhook extends AbstractHandler {
         baseRequest.setHandled(true);
     }
 
-    static String hash(String data) {
+    static String hash(byte[] data) {
         try {
-            final String key = "TODO: load key from file/env";
+            final String key = "secret";
             final String alg = "HmacSHA256";
             SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), alg);
             Mac mac = Mac.getInstance(alg);
             mac.init(secretKeySpec);
-            return bytesToHex(mac.doFinal(data.getBytes()));
+            return bytesToHex(mac.doFinal(data));
         } catch (Exception e) {
             return "";
         }
@@ -65,7 +64,7 @@ public class Webhook extends AbstractHandler {
     static String bytesToHex(byte[] bytes) {
         String result = "";
         for (byte b : bytes) {
-            result = result + String.format("%02X", b);
+            result = result + String.format("%02x", b);
         }
         return result;
     }
