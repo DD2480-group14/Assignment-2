@@ -3,46 +3,20 @@ package assignment;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 
 public class Webview extends AbstractHandler {
 
-
-
-    public static void JsonParser(String[] args) {
-        JSONObject json;
-        String[][] builds;
-        try {
-            JSONArray jsonBuilds = json.getJSONArray("builds.json");
-            builds = new string[jsonBuilds.length()][4]; // assuming it
-            for (int i = 0; i != jsonBuilds.length(); ++i) {
-                JSONArray build = jsonBuilds.getJSONArray(i);
-                builds[i][0] = build.getString(0);
-                builds[i][1] = build.getString(1);
-                builds[i][2] = build.getString(2);
-                builds[i][3] = build.getString(3);
-            }
-        } catch (JSONException e) {
-            System.out.println("Unable to load POINTS from input.json.");
-            return;
-        }
-        /*
-         * try { String content = new String(Files.readAllBytes(Paths.get("builds.json"))); json =
-         * new JSONObject(content); //array of objects } catch (IOException e) {
-         * System.out.println("Unable to read and parse JSON from builds.json."); return; } catch
-         * (JSONException e) {
-         * System.out.println("Unable to read and parse JSON from builds.json."); return; } try {
-         * String id = json.getString("id"); } catch (JSONException e) {} try { String origin =
-         * json.getString("origin"); } catch (JSONException e) {} try { String status =
-         * json.getString("status"); } catch (JSONException e) {} try { String log =
-         * json.getString("log"); } catch (JSONException e) {}
-         */
-    }
 
     @Override
     public void handle(String target,
@@ -51,7 +25,35 @@ public class Webview extends AbstractHandler {
                        HttpServletResponse response) throws IOException, ServletException {
 
         // Load JSON variables
-        JsonParser("builds.json");
+
+
+        JSONArray jsonBuilds;
+        String[][] builds;
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("builds.json")));
+            jsonBuilds = new JSONArray(content);
+        } catch (IOException e) {
+            System.out.println("Unable to read and parse JSON from build.json. IO");
+            return;
+        } catch (JSONException e) {
+            System.out.println("Unable to read and parse JSON from build.json. JSON");
+            return;
+        }
+        try {
+            builds = new String[jsonBuilds.length()][4]; // assuming it
+            for (int i = 0; i != jsonBuilds.length(); ++i) {
+                JSONObject build = jsonBuilds.getJSONObject(i);
+                builds[i][0] = build.getString("id");
+                builds[i][1] = build.getString("origin");
+                builds[i][2] = build.getString("status");
+                builds[i][3] = build.getString("log");
+            }
+        } catch (JSONException e) {
+            System.out.println("Unable to load POINTS from builds.json.");
+
+            return;
+        }
         // Declare response encoding and types
         response.setContentType("text/html; charset=utf-8");
 
@@ -71,25 +73,25 @@ public class Webview extends AbstractHandler {
 
         // Making a box and filling it in with build information
 
-        for (int i = 0; i < builds.length(); i++) {
-            res.println("\n<br>" + "\n<label for=\"freeform\">Build " + i + 1 + "</label>"
+        for (int i = 0; i < builds.length; i++) {
+            res.println("\n<br>" + "\n<label for=\"freeform\">Build " + (i + 1) + "</label>"
                             + "\n<br>"
                             + "\n<textarea id=\"freeform\" name=\"freeform\" rows=\"4\" cols=\"50\">"
                             + "\nid: " + builds[i][0] + "\norigin: " + builds[i][1] + "\nstatus: "
                             + builds[i][2] + "\nlog: " + builds[i][3] + "\n</textarea>" + "\n<br>");
         }
 
-        int NumberofPaginations = math.ceil(builds.length() / 10);
+
         // pagination
-        res.println("\n<h2>More Pages</h2> " + "\n<div class =\"pagination\">"
-                        + "\n<div class =\"pagination\"><a href = \"#\">&laquo;</a>");
-        for (j = 0; j < NumberofPaginations; j++) {
-            res.println("\n<a href=\"#\">" + j + 1 + "</a>");
-        }
-        res.println("\n<a href=\"#\">&raquo;</a>");
-        res.println("\n<a href=\"#\">&raquo;</a>" + "\n</div>" + "\n</body>" + "\n</html>");
-
-
+        /*
+         * int NumberofPaginations = Math.ceil(builds.length / 10);
+         * res.println("\n<h2>More Pages</h2> " + "\n<div class =\"pagination\">" +
+         * "\n<div class =\"pagination\"><a href = \"#\">&laquo;</a>"); for (int j = 0; j <
+         * NumberofPaginations; j++) { res.println("\n<a href=\"#\">" + j + 1 + "</a>"); }
+         * res.println("\n<a href=\"#\">&raquo;</a>"); res.println("\n<a href=\"#\">&raquo;</a>" +
+         * "\n</div>" + "\n</body>" + "\n</html>");
+         * 
+         */
         baseRequest.setHandled(true);
 
         // Using requestcount we can decide number of paginations
