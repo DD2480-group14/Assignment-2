@@ -46,7 +46,13 @@ public class Webview extends AbstractHandler {
             if (target.equals("/")) {
                 serveList(baseRequest, request, response);
             } else if (url.length == 2) {
-                serveBuild(Integer.parseInt(url[1]), baseRequest, request, response);
+                int buildId;
+                try {
+                    buildId = Integer.parseInt(url[1]);
+                } catch (NumberFormatException e) {
+                    return;
+                }
+                serveBuild(buildId, baseRequest, request, response);
             } else {
                 return;
             }

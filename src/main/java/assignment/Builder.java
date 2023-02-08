@@ -24,6 +24,9 @@ public class Builder {
     private static final String repoPath = "build";
     private AtomicReference<String> log;
 
+    int id;
+    Result status;
+
     enum Result {
         Success, FailCompile, FailTest, FailVerify
     }
@@ -35,24 +38,23 @@ public class Builder {
      *
      * @param commitHash hash of the commit to be built
      */
-    public synchronized static Result build(String commitHash) throws Exception {
+    public Builder(String commitHash) throws Exception {
         clone(commitHash);
-        Builder builder = new Builder();
-        Result status = builder.runStages();
+        status = runStages();
 
         Path buildsFile = Paths.get("builds.json");
         String content = new String(Files.readAllBytes(buildsFile));
         JSONArray json = new JSONArray(content);
+        id = json.length();
         JSONObject b = new JSONObject();
         b.put("origin", "https://github.com/DD2480-group14/Assignment-2/commit/" + commitHash);
         b.put("status", status);
-        b.put("log", builder.log.get());
+        b.put("log", log.get());
         json.put(b);
         Files.write(buildsFile, json.toString().getBytes(), StandardOpenOption.CREATE);
-        return status;
     }
 
-    private Result runStages() {
+    private synchronized Result runStages() {
         if (!runMaven(java.util.Arrays.asList("clean", "compile"))) {
             return Result.FailCompile;
         }
