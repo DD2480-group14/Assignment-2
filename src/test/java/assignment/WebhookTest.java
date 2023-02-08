@@ -6,7 +6,7 @@ import org.junit.Assert;
 public class WebhookTest {
     @Test
     public void testHash() {
-        Assert.assertEquals(Webhook.hash(testJson.getBytes()),
+        Assert.assertEquals(Webhook.hash("secret", testJson.getBytes()),
                             "8a6ed5d51d5a5614e69eda32fc78122eff46518307e3ad4e40a4de53ca68b177");
     }
 
