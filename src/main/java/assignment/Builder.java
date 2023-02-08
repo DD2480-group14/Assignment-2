@@ -2,6 +2,10 @@ package assignment;
 
 import java.util.List;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import org.eclipse.jgit.api.Git;
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
@@ -11,11 +15,14 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.commons.io.FileUtils;
 import java.util.concurrent.atomic.AtomicReference;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 
 public class Builder {
     private static final String repoUrl = "https://github.com/DD2480-group14/Assignment-2";
     private static final String repoPath = "build";
+    private AtomicReference<String> log;
 
     enum Result {
         Success, FailCompile, FailTest, FailVerify
@@ -30,6 +37,22 @@ public class Builder {
      */
     public synchronized static Result build(String commitHash) throws Exception {
         clone(commitHash);
+        Builder builder = new Builder();
+        Result status = builder.runStages();
+
+        Path buildsFile = Paths.get("builds.json");
+        String content = new String(Files.readAllBytes(buildsFile));
+        JSONArray json = new JSONArray(content);
+        JSONObject b = new JSONObject();
+        b.put("origin", "https://github.com/DD2480-group14/Assignment-2/commit/" + commitHash);
+        b.put("status", status);
+        b.put("log", builder.log.get());
+        json.put(b);
+        Files.write(buildsFile, json.toString().getBytes(), StandardOpenOption.CREATE);
+        return status;
+    }
+
+    private Result runStages() {
         if (!runMaven(java.util.Arrays.asList("clean", "compile"))) {
             return Result.FailCompile;
         }
@@ -53,12 +76,12 @@ public class Builder {
            .setName(commitHash).call();
     }
 
-    private static boolean runMaven(List<String> goals) {
+    private boolean runMaven(List<String> goals) {
         InvocationRequest request = new DefaultInvocationRequest();
         request.setPomFile(new File(repoPath + "/pom.xml"));
         request.setGoals(goals);
         Invoker invoker = new DefaultInvoker();
-        AtomicReference<String> log = new AtomicReference<String>("");
+        log = new AtomicReference<String>("");
         request.setOutputHandler(outputLine -> {
             log.set(log.get() + outputLine);
         });

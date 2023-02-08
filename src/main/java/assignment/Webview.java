@@ -31,10 +31,8 @@ public class Webview extends AbstractHandler {
             String content = new String(Files.readAllBytes(Paths.get("builds.json")));
             json = new JSONArray(content);
         } catch (IOException e) {
-            System.out.println("Unable to read and parse JSON from build.json. IO");
             return;
         } catch (JSONException e) {
-            System.out.println("Unable to read and parse JSON from build.json. JSON");
             return;
         }
 
