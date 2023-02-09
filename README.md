@@ -64,6 +64,9 @@ You can choose any open task on the project's GitHub Issues [page](https://githu
 ### Jonas Hulthén
 
 ### Christoffer Lundholm
+- Worked on the JSON parser
+- Worked on html code
+- Worked on Webview.java 
 
 ### Tianyu Deng
 
