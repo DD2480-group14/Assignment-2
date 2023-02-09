@@ -29,7 +29,7 @@ public class Main extends AbstractHandler {
     public static void main(String[] args) throws Exception {
         int port = 8080;
         Server server = new Server(port);
-        server.setHandler(new Main());
+        server.setHandler(new Main())
 
         server.start();
         server.join();
