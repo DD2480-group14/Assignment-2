@@ -21,14 +21,17 @@ public class Webhook extends AbstractHandler {
         }
 
         public void run() {
-            Builder.Result status;
+            Builder builder;
             try {
-                status = Builder.build(commitHash);
+                builder = new Builder(commitHash);
             } catch (Exception e) {
                 return;
             }
             try {
-                Notifier.sendStatus(System.getenv("CI_TOKEN"), commitHash, status);
+                Notifier.sendStatus(System.getenv("CI_TOKEN"),
+                                    commitHash,
+                                    builder.id,
+                                    builder.status);
             } catch (Exception e) {}
         }
     }

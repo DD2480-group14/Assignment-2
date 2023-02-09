@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Notifier {
-    static String makeJson(Builder.Result status) {
+    static String makeJson(int buildId, Builder.Result status) {
         String state = "failure";
         String description = "";
         if (status == Builder.Result.Success) {
@@ -18,13 +18,13 @@ public class Notifier {
         } else if (status == Builder.Result.FailVerify) {
             description = "Failed additional checks.";
         }
-        return "{\"state\":\"" + state
-                        + "\",\"target_url\":\"https://ci.veresov.pro/\",\"description\":\""
-                        + description + "\",\"context\":\"Awesome CI\"}";
+        return "{\"state\":\"" + state + "\",\"target_url\":\"https://ci.veresov.pro/" + buildId
+                        + "\",\"description\":\"" + description + "\",\"context\":\"Awesome CI\"}";
     }
 
     public static void sendStatus(String token,
                                   String commitHash,
+                                  int buildId,
                                   Builder.Result status) throws Exception {
         String baseUrl = "https://api.github.com/repos/DD2480-group14/Assignment-2/statuses/";
         URL url = new URL(baseUrl + commitHash);
@@ -36,8 +36,10 @@ public class Notifier {
         connection.setDoOutput(true);
         connection.connect();
         OutputStream out = connection.getOutputStream();
-        out.write(makeJson(status).getBytes());
+        out.write(makeJson(buildId, status).getBytes());
         out.flush();
         out.close();
+        System.out.println(connection.getResponseCode());
+        System.out.println(connection.getResponseMessage());
     }
 }
