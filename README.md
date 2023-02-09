@@ -60,6 +60,10 @@ You can choose any open task on the project's GitHub Issues [page](https://githu
 
 
 ### Aleksey Veresov
+- Set up Maven
+- Implemented Webhook
+- Integrated parts of the program
+- Worked on documentation
 
 ### Jonas Hulthén
 - Worked on the builder
@@ -72,6 +76,8 @@ You can choose any open task on the project's GitHub Issues [page](https://githu
 - Worked on Webview.java 
 
 ### Tianyu Deng
+- Worked on notifier
+- Worked on documeantation
 
 
 ## TEAM
