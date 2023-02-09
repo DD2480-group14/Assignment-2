@@ -12,14 +12,23 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.io.IOUtils;
 
+/** Processes request from GitHub in form of webhooks. */
 public class Webhook extends AbstractHandler {
-    private class WorkThread extends Thread {
-        String commitHash;
+    /** A thread building requested commit and sending notification avout its result to GitHub. */
+    public class WorkThread extends Thread {
+        /** The hash identifying the commit to be built. */
+        public String commitHash;
 
-        WorkThread(String commitHash) {
+        /**
+         * Simply saves commitHash for use in run.
+         *
+         * @param commitHash The commit identifier to be saved.
+         */
+        public WorkThread(String commitHash) {
             this.commitHash = commitHash;
         }
 
+        /** Runs Builder for saved commitHash and uses Notifier to send the results to GitHub. */
         public void run() {
             Builder builder;
             try {
@@ -36,6 +45,10 @@ public class Webhook extends AbstractHandler {
         }
     }
 
+    /**
+     * Parses the webhook json, verifies it using HMAC. Then starts new thread to make the build and
+     * notify GitHub about its result.
+     */
     @Override
     public void handle(String target,
                        Request baseRequest,

@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/** Provides sendStatus to notify GitHub about results of build. */
 public class Notifier {
     static String makeJson(int buildId, Builder.Result status) {
         String state = "failure";
@@ -22,6 +23,14 @@ public class Notifier {
                         + "\",\"description\":\"" + description + "\",\"context\":\"Awesome CI\"}";
     }
 
+    /**
+     * Creates and sends a GitHub status for commit with commitHash.
+     *
+     * @param token Secret token used for GitHub auth.
+     * @param commitHash Identifies the commit to send status for.
+     * @param buildId Is used to provide a link for detailed description of status.
+     * @param status The status code.
+     */
     public static void sendStatus(String token,
                                   String commitHash,
                                   int buildId,
