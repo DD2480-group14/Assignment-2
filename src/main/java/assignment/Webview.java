@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+/** Provides webview for the CI. */
 public class Webview extends AbstractHandler {
     private JSONArray json;
     private PrintWriter res;
@@ -22,6 +23,13 @@ public class Webview extends AbstractHandler {
                     + "</style></head><body>";
     private String footer = "</body></html>";
 
+    /**
+     * For empty path serves the list of all builds, for a path consisting of only a number (like
+     * /5), it serves the page with details of build.
+     *
+     * <p>
+     * The data is loaded from builds.json.
+     */
     @Override
     public void handle(String target,
                        Request baseRequest,

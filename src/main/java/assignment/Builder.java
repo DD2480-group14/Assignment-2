@@ -19,22 +19,44 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 
+/**
+ * The builder class is used to clone a repository and build a project using maven.
+ */
 public class Builder {
     private static final String repoUrl = "https://github.com/DD2480-group14/Assignment-2";
     private static final String repoPath = "build";
     private AtomicReference<String> log;
 
-    int id;
-    Result status;
+    /** The build id. */
+    public int id;
+    /** Status code of the build. */
+    public Result status;
 
-    enum Result {
-        Success, FailCompile, FailTest, FailVerify
+    /** Result contains all possible status codes. */
+    public enum Result {
+        /** Indicates that the build was successful. */
+        Success,
+        /** Indicates that the build failed at compilation stage. */
+        FailCompile,
+        /** Indicates that the build failed some tests. */
+        FailTest,
+        /** Indicates that the build failed some additional checks. */
+        FailVerify
     }
 
     /**
-     * The builder class is used to clone a repository and build a project using maven. The class
-     * uses the branchName and commitHash to decide which branch and commit to clone and build. The
-     * output of the build is written to a log file in the cloned repository folder.
+     * Clones the repository, checkouts the commit with commitHash, and builds it.
+     *
+     * <p>
+     * The build is done in steps to provide information about the stage at which fail occurs, if
+     * there is a fail.
+     *
+     * <p>
+     * The results are saved in builds.json, for each build it contains a link to the origin commit,
+     * status code and full build log of last stage.
+     *
+     * <p>
+     * Variables id and status are initialized.
      *
      * @param commitHash hash of the commit to be built
      */
