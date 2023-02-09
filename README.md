@@ -28,6 +28,8 @@ pacman -S jdk-openjdk maven
 On Windows you can download [JDK](https://www.oracle.com/java/technologies/downloads/#java8-windows) and [Maven](https://dlcdn.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.zip) installers from the official websites. Once they are installed, you will need to add corresponding `\bin` folders to your PATH: more detailed instruction is [available](https://maven.apache.org/install.html#windows-tips) on Maven's site.
 
 
+TEST
+
 ## Building
 
 The used Maven configuration can be found in `pom.xml`. JUnit is used for testing. To create an executable in `target/assignment-1.0-SNAPSHOT.jar` you can run:
