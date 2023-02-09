@@ -62,6 +62,9 @@ You can choose any open task on the project's GitHub Issues [page](https://githu
 ### Aleksey Veresov
 
 ### Jonas Hulthén
+- Worked on the builder
+- Worked on the tests
+- Worked on documentation for builder
 
 ### Christoffer Lundholm
 - Worked on the JSON parser
