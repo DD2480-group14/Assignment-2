@@ -26,6 +26,7 @@ public class BuilderTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        Assert.fail();
     }
 
     // clone non existing commit
